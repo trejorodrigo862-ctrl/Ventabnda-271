@@ -4,11 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Venta Banda</title>
+
+    <link rel="manifest" href="./public/manifest.json">
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("./public/sw.js");
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
-
-    <!-- Conecta React -->
     <script type="module" src="./src/index.jsx"></script>
   </body>
 </html>
