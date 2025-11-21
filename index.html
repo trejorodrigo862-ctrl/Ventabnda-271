@@ -1,54 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link rel="manifest" href="./manifest.json" />
-  <meta name="theme-color" content="#000000" />
-  <link rel="apple-touch-icon" href="./icons/icon.svg">
+    <title>Ventas Mc Banda - Panel de Control</title>
 
-  <title>Ventas Mc Banda - Panel de Control</title>
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="apple-touch-icon" href="/icons/icon.svg">
 
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.14/dist/tailwind.min.css" rel="stylesheet">
+    <!-- fonts (Google) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Vite will inject the built CSS/JS -->
+  </head>
 
-  <script type="importmap">
-  {
-    "imports": {
-      "react/": "https://aistudiocdn.com/react@^19.2.0/",
-      "react": "https://aistudiocdn.com/react@^19.2.0",
-      "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-      "react-router-dom": "https://aistudiocdn.com/react-router-dom@^6.25.1",
-      "@google/genai": "https://aistudiocdn.com/@google/genai@^1.26.0",
-      "recharts": "https://aistudiocdn.com/recharts@^3.3.0",
-      "html2canvas": "https://aistudiocdn.com/html2canvas@^1.4.1",
-      "qrcode": "https://aistudiocdn.com/qrcode@^1.5.3",
-      "jszip": "https://aistudiocdn.com/jszip@^3.10.1"
-    }
-  }
-  </script>
-</head>
+  <body class="bg-gray-100 text-gray-800 dark:bg-black dark:text-gray-200">
+    <div id="root"></div>
 
-<body class="bg-gray-100 text-gray-800 dark:bg-black dark:text-gray-200">
-  <div id="root"></div>
-
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script type="text/babel" data-type="module" src="./src/index.jsx"></script>
-
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('SW registered:', reg))
-          .catch(err => console.log('SW registration failed:', err));
-      });
-    }
-  </script>
-</body>
+    <!-- Vite entry -->
+    <script type="module" src="/src/index.jsx"></script>
+  </body>
 </html>
   
