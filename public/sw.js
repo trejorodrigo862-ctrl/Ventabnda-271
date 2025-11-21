@@ -1,106 +1,59 @@
-
-const CACHE_NAME = 'ventas-mcbanda-cache-v19'; // Bump version
-const APP_SHELL_URLS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icons/icon.svg',
-  '../src/index.tsx',
-  '../src/App.tsx',
-  '../src/types.ts',
-  './metadata.json',
-  '../src/hooks/useLocalStorage.ts',
-  '../src/services/geminiService.ts',
-  '../src/services/commissionService.ts',
-  '../src/components/Dashboard.tsx',
-  '../src/components/Products.tsx',
-  '../src/components/Sales.tsx',
-  '../src/components/Insights.tsx',
-  '../src/components/Settings.tsx',
-  '../src/components/Informes.tsx',
-  '../src/components/MyGoals.tsx',
-  '../src/components/Commissions.tsx',
-  '../src/components/MyCommissions.tsx',
-  '../src/components/CommissionCalculator.tsx',
-  '../src/components/Intro.tsx',
-  '../src/components/Modal.tsx',
-  '../src/components/Sidebar.tsx',
-  '../src/components/icons.tsx',
-  '../src/components/FormInputs.tsx',
-  '../src/components/QrCodeModal.tsx',
-  '../src/components/PwaInstall.tsx',
-  '../src/components/History.tsx',
-  '../src/context/AppContext.tsx',
-  // External Dependencies for Offline Functionality
-  'https://cdn.tailwindcss.com',
-  'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap',
-  'https://aistudiocdn.com/react@^19.2.0',
-  'https://aistudiocdn.com/react-dom@^19.2.0/',
-  'https://aistudiocdn.com/react-router-dom@^6.25.1',
-  'https://aistudiocdn.com/@google/genai@^1.26.0',
-  'https://aistudiocdn.com/recharts@^3.3.0',
-  'https://aistudiocdn.com/html2canvas@^1.4.1',
-  'https://aistudiocdn.com/qrcode@^1.5.3',
-  'https://aistudiocdn.com/jszip@^3.10.1'
+const CACHE_NAME = "ventas-mcbanda-cache-v1";
+const FILES_TO_CACHE = [
+  "./",
+  "/index.html",
+  "/manifest.json",
+  "/icons/icon.svg"
 ];
 
-self.addEventListener('install', (event) => {
+// Install
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('Opened cache and caching app shell and dependencies');
-        // Use individual requests to avoid all-or-nothing failure of addAll
-        const promises = APP_SHELL_URLS.map((url) => {
-          const request = new Request(url, {cache: 'reload'});
-          return fetch(request) 
-            .then(response => {
-              if (response.ok) {
-                return cache.put(url, response);
-              }
-              console.warn(`Failed to cache ${url}: Response not OK`);
-              return Promise.resolve();
-            })
-            .catch(err => console.warn(`Failed to cache ${url}:`, err));
-        });
-        return Promise.all(promises);
-      })
-      .then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES_TO_CACHE))
   );
+  self.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
-  const cacheWhitelist = [CACHE_NAME];
+// Activate
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-          return null;
+    caches.keys().then((keys) =>
+      Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : null)))
+    )
+  );
+  self.clients.claim();
+});
+
+// Fetch - network-first with cache fallback for assets
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
+
+  // For navigation requests (HTML), try network first then cache
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request)
+        .then((res) => {
+          // put a copy in the cache
+          const resClone = res.clone();
+          caches.open(CACHE_NAME).then((c) => c.put(event.request, resClone));
+          return res;
         })
-      );
-    }).then(() => self.clients.claim())
-  );
-});
-
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') {
+        .catch(() => caches.match("/index.html"))
+    );
     return;
   }
 
+  // For other requests, try cache then network
   event.respondWith(
-    caches.match(event.request)
-      .then((cachedResponse) => {
-        const fetchPromise = fetch(event.request).then(networkResponse => {
-            // Do not cache responses from the network on fetch to ensure freshness,
-            // rely on the install step for caching the app shell.
-            return networkResponse;
-        });
-
-        // Return from cache if found, otherwise fetch from network.
-        return cachedResponse || fetchPromise;
-      })
+    caches.match(event.request).then((cached) => {
+      return cached || fetch(event.request).then((res) => {
+        // cache fetched asset (but avoid CORS-blocked responses)
+        if (res && res.ok && res.type === "basic") {
+          const resClone = res.clone();
+          caches.open(CACHE_NAME).then((c) => c.put(event.request, resClone));
+        }
+        return res;
+      }).catch(() => cached);
+    })
   );
 });
