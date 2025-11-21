@@ -5,15 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Venta Banda</title>
 
-    <link rel="manifest" href="./public/manifest.json">
+    <!-- MANIFEST CORRECTO PARA GITHUB PAGES -->
+    <link rel="manifest" href="./Ventabnda-271/public/manifest.json">
+
+    <!-- SERVICE WORKER CORRECTO PARA GITHUB PAGES -->
     <script>
       if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("./public/sw.js");
+        navigator.serviceWorker.register("./Ventabnda-271/public/sw.js");
       }
     </script>
   </head>
+
   <body>
     <div id="root"></div>
+
+    <!-- TU APP REACT -->
     <script type="module" src="./src/index.jsx"></script>
   </body>
 </html>
