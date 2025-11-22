@@ -20,7 +20,6 @@ const LoginScreen: React.FC = () => {
     const { users, handleLogin } = useAppContext();
     return (
         <div className="relative flex flex-col items-center justify-center min-h-screen bg-black p-4 overflow-hidden">
-            {/* Video Background */}
             <video
               autoPlay
               loop
@@ -32,7 +31,6 @@ const LoginScreen: React.FC = () => {
             />
             <div className="absolute inset-0 bg-black/50 z-10" />
 
-            {/* Content */}
             <div className="relative z-20 flex flex-col items-center justify-center w-full">
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 text-center">Ventas Mc Banda</h1>
                 <p className="text-slate-300 mb-8 text-center">Selecciona tu perfil para continuar</p>
@@ -84,14 +82,12 @@ const App: React.FC = () => {
               <MenuIcon />
           </button>
           <Routes>
-            {/* Common Routes */}
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/sales" element={<Sales />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/calculator" element={<CommissionCalculator />} />
 
-            {/* Encargado Routes */}
             {currentUser.role === 'Encargado' && (
                 <>
                     <Route path="/team" element={<Team viewMode="members" />} />
@@ -103,7 +99,6 @@ const App: React.FC = () => {
                 </>
             )}
 
-            {/* Vendedor/Cajero Routes */}
             {['Vendedor', 'Cajero'].includes(currentUser.role) && (
                 <>
                     <Route path="/my-goals" element={<MyGoals />} />
