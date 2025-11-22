@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from '@/App.tsx';
+import App from './App.tsx'; // Importación de App.tsx con ruta relativa
 import { AppProvider } from '@/context/AppContext';
 import '@/index.css';
 
