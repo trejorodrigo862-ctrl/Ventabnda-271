@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useAppContext } from './context/AppContext';
-import Sidebar from './components/Sidebar';
-import Dashboard from './components/Dashboard';
-import Team from './components/Products';
-import Sales from './components/Sales';
-import Reports from './components/Insights';
-import Settings from './components/Settings';
-import Informes from './components/Informes';
-import MyGoals from './components/MyGoals';
-import Commissions from './components/Commissions';
-import MyCommissions from './components/MyCommissions';
-import CommissionCalculator from './components/CommissionCalculator';
-import Intro from './components/Intro';
-import History from './components/History';
-import { MenuIcon } from './components/icons';
+import { useAppContext } from '@/context/AppContext';
+import Sidebar from '@/components/Sidebar';
+import Dashboard from '@/components/Dashboard';
+import Team from '@/components/Products';
+import Sales from '@/components/Sales';
+import Reports from '@/components/Insights';
+import Settings from '@/components/Settings';
+import Informes from '@/components/Informes';
+import MyGoals from '@/components/MyGoals';
+import Commissions from '@/components/Commissions';
+import MyCommissions from '@/components/MyCommissions';
+import CommissionCalculator from '@/components/CommissionCalculator';
+import Intro from '@/components/Intro';
+import History from '@/components/History';
+import { MenuIcon } from '@/components/icons';
 
 const LoginScreen: React.FC = () => {
     const { users, handleLogin } = useAppContext();
